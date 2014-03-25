@@ -1,4 +1,3 @@
 <?php
-	echo "branch2";
-
+	echo "master";
 ?>
