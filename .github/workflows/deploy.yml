@@ -1,55 +1,46 @@
-name: CI/CD
+name: Deploy H5 to Baidu BOS
 
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - master
+      - main
+  workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: bos-production
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'production' || 'beta' }}
+    environment: production
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: npm
-      - run: npm install
-      - run: npm run lint
-      - run: npm run build
-      - name: Package standalone release
-        run: |
-          mkdir -p release/.next/static release/public
-          cp -r .next/standalone/* release/
-          cp -r .next/static release/.next/static
-          cp -r public/* release/public/ 2>/dev/null || true
-          cp package.json release/
-          cp package-lock.json release/ 2>/dev/null || true
-          tar -czf zaneshi-release.tar.gz -C release .
-      - name: Upload release and deploy
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          port: ${{ secrets.SERVER_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: zaneshi-release.tar.gz,scripts/deploy.sh
-          target: /tmp/zaneshi-deploy
-      - name: Execute remote deploy
-        uses: appleboy/ssh-action@v1.0.3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build and export static site
+        run: npm run build
+
+      - name: Install Baidu BOS CLI
+        run: python -m pip install --upgrade bcecmd
+
+      - name: Upload to Baidu BOS
         env:
-          SERVER_PATH: ${{ secrets.SERVER_PATH }}
-          GITHUB_SHA: ${{ github.sha }}
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          port: ${{ secrets.SERVER_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SERVER_PATH,GITHUB_SHA
-          script: |
-            mv /tmp/zaneshi-deploy/zaneshi-release.tar.gz /tmp/zaneshi-release.tar.gz
-            bash /tmp/zaneshi-deploy/scripts/deploy.sh
+          BCE_ACCESS_KEY: ${{ secrets.BCE_ACCESS_KEY }}
+          BCE_SECRET_KEY: ${{ secrets.BCE_SECRET_KEY }}
+          BOS_BUCKET: ${{ secrets.BOS_BUCKET }}
+          BOS_ENDPOINT: ${{ secrets.BOS_ENDPOINT }}
+        run: bash scripts/deploy.sh
