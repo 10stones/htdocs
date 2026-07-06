@@ -1,30 +1,34 @@
-# zaneshi.com
+# htdocs H5 Platform
 
-面向长期维护的个人网站工程，使用 Next.js App Router、TypeScript、Tailwind CSS、shadcn/ui 与 GitHub Actions 自动部署到百度智能云 ECS。
+This repository is the production H5 platform for `h5.zaneshi.com`.
 
-## 技术栈
+Production branch: `main` only.
 
-- Next.js App Router + TypeScript
-- Tailwind CSS + shadcn/ui + lucide-react
-- ESLint + Prettier + Husky + lint-staged + commitlint
-- GitHub Actions + SSH + Nginx + Let's Encrypt
-
-## 目录说明
+## Deployment model
 
 ```text
-src/app                页面路由
-src/components         通用组件与 UI 基础组件
-src/features           业务功能模块
-src/hooks              React hooks
-src/lib                配置、工具函数和基础库
-src/styles             全局样式
-content                Markdown/内容源
-scripts                部署与运维脚本
-deploy/nginx           Nginx 配置模板
-docs                  部署与协作文档
+Feature branch
+  -> Pull Request
+  -> Review
+  -> Merge into main
+  -> GitHub Actions
+  -> Static Next.js export
+  -> Baidu BOS
+  -> CDN
 ```
 
-## 开发命令
+## Stack
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- ESLint
+- Prettier
+- GitHub Actions
+- Baidu Cloud BOS
+
+## Commands
 
 ```bash
 npm install
@@ -34,29 +38,28 @@ npm run build
 npm run format
 ```
 
-## 部署方式
+## Production deployment
 
-- push 到 `dev`：部署到 `beta.zaneshi.com`
-- push 到 `main`：部署到 `https://zaneshi.com`
+The workflow `.github/workflows/deploy.yml` deploys on:
 
-GitHub Secrets：`SERVER_HOST`、`SERVER_USER`、`SERVER_PORT`、`SERVER_PATH`、`SSH_PRIVATE_KEY`。
+- push to `main`
+- manual `workflow_dispatch`
 
-## 环境变量
+Required GitHub Secrets:
 
-复制 `.env.example` 为 `.env.local`，按需配置：
+- `BCE_ACCESS_KEY`
+- `BCE_SECRET_KEY`
+- `BOS_BUCKET`
+- `BOS_ENDPOINT`
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://zaneshi.com
-```
+See `docs/deployment.md` for details.
 
-## 未来规划
+## Future H5 sections
 
-- Blog 内容系统
-- Projects 项目陈列
-- Life / Photography / Cycling / Snowboard 专题
-- AI 实验与工具页
-- 自动化监控、备份和回滚增强
-
-## GitHub 权限配置
-
-请参考 `docs/08-GitHub权限配置.md`，使用 GitHub CLI 配置 `dev` 分支、Environments 和 Secrets。不要把 Token、SSH 私钥或服务器密码发送到聊天窗口。
+- `travel`
+- `career`
+- `tutorial`
+- `client`
+- `life`
+- `ai`
+- `tools`
