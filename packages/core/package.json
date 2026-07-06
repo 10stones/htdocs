@@ -1,0 +1,11 @@
+{
+  "name": "@zaneshi/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./site": "./src/site.ts",
+    "./utils": "./src/utils.ts",
+    "./content/sections": "./src/content/sections.ts"
+  }
+}

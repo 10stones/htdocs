@@ -1,9 +1,40 @@
-node_modules
-.next
-out
-.env*
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# Next.js
+.next/
+out/
+apps/*/.next/
+apps/*/out/
+next-env.d.ts
+
+# production/build artifacts
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# env files
+.env
+.env.*
 !.env.example
-.DS_Store
+
+# logs
 npm-debug.log*
-.vercel
-coverage
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# deployment archives
+*.tar.gz
+
+# local BOS CLI config
+.bcecmd.conf
