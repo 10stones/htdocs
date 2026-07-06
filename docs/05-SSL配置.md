@@ -1,11 +1,10 @@
-# 05-SSL配置
+# 05-HTTPS / CDN 证书配置
 
-## 安装 Certbot
+生产 HTTPS 建议通过 CDN 或 Baidu Cloud 域名证书管理完成。
 
-```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d zaneshi.com -d www.zaneshi.com -d beta.zaneshi.com
-sudo certbot renew --dry-run
-```
+## 建议流程
 
-证书生成后，复制 `deploy/nginx/zaneshi.conf` 到 `/etc/nginx/sites-available/zaneshi.conf`，并软链到 `sites-enabled`。
+1. 准备 `h5.zaneshi.com` DNS。
+2. 在 CDN 或 Baidu Cloud 控制台申请/上传证书。
+3. 将 CDN 回源配置到 BOS 静态网站。
+4. 部署后验证 HTTPS、缓存和回源行为。

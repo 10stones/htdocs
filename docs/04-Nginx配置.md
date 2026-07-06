@@ -1,18 +1,12 @@
-# 04-Nginx配置
+# 04-CDN / 静态托管配置
 
-## 安装并启用配置
+生产站点由 Baidu BOS 静态网站托管，并可在前面接入 CDN。
 
-```bash
-sudo cp deploy/nginx/zaneshi.conf /etc/nginx/sites-available/zaneshi.conf
-sudo ln -sfn /etc/nginx/sites-available/zaneshi.conf /etc/nginx/sites-enabled/zaneshi.conf
-sudo nginx -t
-sudo systemctl reload nginx
-```
+## 建议配置
 
-## 特性
+- BOS 静态网站 Index document：`index.html`
+- HTML：使用 no-cache 策略
+- `_next` 静态资源：使用长期 immutable 缓存
+- CDN：域名准备完成后绑定 `h5.zaneshi.com`
 
-- HTTP 自动跳转 HTTPS
-- gzip 压缩
-- Brotli 配置（如果 Nginx 已安装 Brotli 模块）
-- Next.js 静态资源长期缓存
-- 反向代理到本机 `127.0.0.1:3000`
+Nginx 配置仅作为历史参考，不再是生产部署链路的一部分。
