@@ -1,43 +1,30 @@
 {
-  "name": "zaneshi-com",
+  "name": "htdocs",
   "version": "0.1.0",
   "private": true,
-  "description": "Personal website for zaneshi.com built with Next.js App Router.",
+  "description": "Production-ready personal H5 platform for h5.zaneshi.com.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "npm --workspace @zaneshi/web run dev",
+    "build": "npm --workspace @zaneshi/web run build",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "deploy": "bash scripts/deploy.sh",
     "prepare": "husky"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "latest",
-    "class-variance-authority": "latest",
-    "clsx": "latest",
-    "lucide-react": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "tailwind-merge": "latest",
-    "tailwindcss-animate": "latest"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
-    "@tailwindcss/postcss": "latest",
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "husky": "latest",
     "lint-staged": "latest",
-    "postcss": "latest",
     "prettier": "latest",
     "prettier-plugin-tailwindcss": "latest",
-    "tailwindcss": "latest",
     "typescript": "latest"
   },
   "lint-staged": {
