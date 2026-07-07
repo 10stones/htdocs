@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "deploy": "bash scripts/deploy.sh",
+    "deploy": "python scripts/upload_bos.py",
     "prepare": "husky"
   },
   "devDependencies": {
