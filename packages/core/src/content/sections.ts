@@ -1,4 +1,6 @@
-export type H5SectionKey = 'travel' | 'career' | 'tutorial' | 'client' | 'tools';
+export const h5SectionKeys = ['travel', 'career', 'tutorial', 'client', 'tools'] as const;
+
+export type H5SectionKey = (typeof h5SectionKeys)[number];
 
 export type H5Section = {
   key: H5SectionKey;
@@ -54,4 +56,8 @@ export const h5Sections = {
 
 export function getH5Section(key: H5SectionKey): H5Section {
   return h5Sections[key];
+}
+
+export function isH5SectionKey(key: string): key is H5SectionKey {
+  return h5SectionKeys.includes(key as H5SectionKey);
 }
