@@ -26,7 +26,7 @@ if [[ ! -d "$OUT_DIR" ]]; then
 fi
 
 if ! command -v bcecmd >/dev/null 2>&1; then
-  echo "bcecmd is not installed. Install with: python -m pip install bcecmd" >&2
+  echo "bcecmd is not installed. Install the BOSCMD binary from Baidu Cloud docs before deploying." >&2
   exit 1
 fi
 
