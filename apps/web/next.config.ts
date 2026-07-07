@@ -1,3 +1,4 @@
+import path from 'node:path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -9,6 +10,9 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   trailingSlash: true,
+  turbopack: {
+    root: path.join(process.cwd(), '../..'),
+  },
 };
 
 export default nextConfig;

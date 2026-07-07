@@ -9,16 +9,22 @@ This repository exports the Next.js H5 platform as a static website and deploys 
 - Future domain: `https://h5.zaneshi.com`
 - Build output: `apps/web/out`
 
-## Required GitHub Secrets
+## Required GitHub configuration
 
 Configure these repository secrets in GitHub Actions:
 
-| Secret | Purpose |
-| --- | --- |
-| `BCE_ACCESS_KEY` | Baidu Cloud access key ID. |
-| `BCE_SECRET_KEY` | Baidu Cloud secret access key. |
+| Secret           | Purpose                        |
+| ---------------- | ------------------------------ |
+| `BOS_ACCESS_KEY` | Baidu Cloud access key ID.     |
+| `BOS_SECRET_KEY` | Baidu Cloud secret access key. |
+
+Configure this repository variable in GitHub Actions:
+
+| Variable     | Purpose                                                 |
+| ------------ | ------------------------------------------------------- |
 | `BOS_BUCKET` | Production BOS bucket name, normally `zaneshi-h5-prod`. |
-| `BOS_ENDPOINT` | BOS endpoint for the `bj` region. |
+
+The workflow sets `BOS_REGION` to `bj`. Override `BOS_ENDPOINT` only when the default `https://<region>.bcebos.com` endpoint is not suitable.
 
 Never commit real credential values to the repository.
 
@@ -27,11 +33,11 @@ Never commit real credential values to the repository.
 The workflow in `.github/workflows/deploy.yml` runs on every push to `main` and can also be started manually with `workflow_dispatch`.
 
 1. Check out the repository.
-2. Install Node.js 22 and npm dependencies with `npm install`.
+2. Install Node.js 22 and npm dependencies with `npm ci`.
 3. Run ESLint.
 4. Build and statically export the Next.js app with `npm run build`.
-5. Install the Baidu BOS CLI (`bcecmd`).
-6. Run `scripts/deploy.sh` to replace the current bucket contents with the exported site.
+5. Install the official Baidu `bce-python-sdk`.
+6. Run `scripts/upload_bos.py` to upload every exported file to the configured BOS bucket, overwriting same-name objects.
 
 The deployment script uploads hashed Next.js assets under `_next/` with long-lived immutable cache headers and uploads HTML files with no-cache headers so `index.html` updates are visible quickly.
 
@@ -52,12 +58,12 @@ Local deployment uses the same script as CI:
 ```bash
 npm install
 npm run build
-python -m pip install --upgrade bcecmd
-export BCE_ACCESS_KEY="..."
-export BCE_SECRET_KEY="..."
+python -m pip install --upgrade bce-python-sdk
+export BOS_ACCESS_KEY="..."
+export BOS_SECRET_KEY="..."
 export BOS_BUCKET="zaneshi-h5-prod"
-export BOS_ENDPOINT="..."
-bash scripts/deploy.sh
+export BOS_REGION="bj"
+python scripts/upload_bos.py
 ```
 
 ## Troubleshooting

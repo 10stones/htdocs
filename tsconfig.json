@@ -19,8 +19,17 @@
       "@/components/*": ["./components/*"],
       "@/styles/*": ["./styles/*"],
       "@/lib/*": ["./packages/core/src/*"]
-    }
+    },
+    "ignoreDeprecations": "6.0"
   },
-  "include": ["next-env.d.ts", "apps/**/*.ts", "apps/**/*.tsx", "components/**/*.ts", "components/**/*.tsx", "packages/**/*.ts", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "packages/**/*.ts",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

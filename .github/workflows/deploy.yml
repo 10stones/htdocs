@@ -25,7 +25,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint
         run: npm run lint
@@ -33,13 +33,15 @@ jobs:
       - name: Build and export static site
         run: npm run build
 
-      - name: Install Baidu BOS CLI
-        run: python -m pip install --upgrade bcecmd
+      - name: Install Baidu BOS Python SDK
+        run: python -m pip install --upgrade bce-python-sdk
 
       - name: Upload to Baidu BOS
         env:
-          BCE_ACCESS_KEY: ${{ secrets.BCE_ACCESS_KEY }}
-          BCE_SECRET_KEY: ${{ secrets.BCE_SECRET_KEY }}
-          BOS_BUCKET: ${{ secrets.BOS_BUCKET }}
-          BOS_ENDPOINT: ${{ secrets.BOS_ENDPOINT }}
-        run: bash scripts/deploy.sh
+          BOS_ACCESS_KEY: ${{ secrets.BOS_ACCESS_KEY }}
+          BOS_SECRET_KEY: ${{ secrets.BOS_SECRET_KEY }}
+          # Fill this repository variable with the BOS bucket name, for example: zaneshi-h5-prod.
+          BOS_BUCKET: ${{ vars.BOS_BUCKET }}
+          # Fill this region value with the BOS bucket region, for example: bj.
+          BOS_REGION: bj
+        run: python scripts/upload_bos.py
